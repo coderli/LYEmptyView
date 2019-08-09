@@ -46,16 +46,40 @@ static char kEmptyViewKey;
     NSInteger totalCount = 0;
     if ([self isKindOfClass:[UITableView class]]) {
         UITableView *tableView = (UITableView *)self;
-        
-        for (NSInteger section = 0; section < tableView.numberOfSections; section++) {
-            totalCount += [tableView numberOfRowsInSection:section];
+        if (tableView.numberOfSections != 0)
+        {
+            totalCount = tableView.numberOfSections;
         }
-    } else if ([self isKindOfClass:[UICollectionView class]]) {
+        else
+        {
+            for (NSInteger section = 0; section < tableView.numberOfSections; section++) {
+                if ([tableView numberOfRowsInSection:section] != 0)
+                {
+                    totalCount = [tableView numberOfRowsInSection:section];
+                    break;
+                }
+            }
+        }
+        
+    }
+    else if ([self isKindOfClass:[UICollectionView class]]) {
         UICollectionView *collectionView = (UICollectionView *)self;
         
-        for (NSInteger section = 0; section < collectionView.numberOfSections; section++) {
-            totalCount += [collectionView numberOfItemsInSection:section];
+        if ([collectionView numberOfSections] != 0)
+        {
+            totalCount = [collectionView numberOfSections];
         }
+        else
+        {
+            for (NSInteger section = 0; section < collectionView.numberOfSections; section++) {
+                if ([collectionView numberOfItemsInSection:section] != 0)
+                {
+                    totalCount = [collectionView numberOfItemsInSection:section];
+                    break;
+                }
+            }
+        }
+        
     }
     return totalCount;
 }
